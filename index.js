@@ -18,14 +18,24 @@ function myMap(collection, callback) {
     return newArray
 };
 
-function myReduce(collection, callback, acc=0) {
-    let copy = [...collection]
-    acc = acc || copy.shift();
-    for (let accessor in copy) {
-        acc = callback(acc, copy[accessor], copy)
+function myReduce(collection, callback, acc) {
+    const c = [...collection];
+    let result;
+
+    if (acc) {
+      result = acc;
+      for (let i = 0; i < collection.length; i++){
+        result = callback(result, collection[i], collection);
+      }
+    } else {
+      result = collection[0];
+      for (let i = 1; i < collection.length; i++){
+        result = callback(result, collection[i], collection);
+      }
     }
-    return acc;
-  }
+
+  return result;
+}
 
 function myFind(collection, predicate) {
     let values = Object.values(collection)
